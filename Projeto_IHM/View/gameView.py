@@ -92,18 +92,11 @@ class JogoView:
             200,
             50
         )
-        '''
-        self.botao_inserir = pygame.Rect(
-            550,
-            500,
-            200,
-            60
-        )
-        '''
+
         self.tela = tela
 
-        # Escala 1:6 pixels
-        self.escala = 6
+        # Escala 1:8 pixels
+        self.escala = 8
         self.escala_base = self.escala
 
         # Posição da origem do sistema físico na tela
@@ -124,9 +117,6 @@ class JogoView:
         self.CINZA = (100, 100, 100)
         self.VERDE = (0, 180, 0)
 
-    # ==========================================================
-    # CONVERSÃO: COORDENADAS FÍSICAS -> COORDENADAS DA TELA
-    # ==========================================================
     def mundo_para_tela(self, x, y):
         tela_x = (
             self.origem_x
@@ -139,61 +129,9 @@ class JogoView:
 
         return int(tela_x), int(tela_y)
 
-    '''
-    def atualizar_camera(self, jogo):
-
-        if not self.camera_ativa:
-            return
-
-        projetil = jogo.projetil
-
-        if projetil is None:
-            alvo_x = 0.0
-            alvo_y = 0.0
-
-        elif self.modo_camera == "seguir":
-
-            # Acompanhar o projétil
-            alvo_x = projetil.x - (
-                self.largura / 2 - self.origem_x
-            ) / self.escala
-
-            alvo_y = projetil.y - (
-                self.chao_y - self.altura / 2
-            ) / self.escala
-
-        else:
-            # Visão geral: enquadrar alvo e ponto de queda
-            alvo = jogo.alvo
-
-            if alvo is not None:
-                meio_x = (alvo.x + projetil.x) / 2
-                meio_y = (alvo.y + projetil.y) / 2
-            else:
-                meio_x = projetil.x
-                meio_y = projetil.y
-
-            alvo_x = meio_x - (
-                self.largura / 2 - self.origem_x
-            ) / self.escala
-
-            alvo_y = meio_y - (
-                self.chao_y - self.altura / 2
-            ) / self.escala
-
-        # Transição suave
-        self.camera_x += (
-            alvo_x - self.camera_x
-        ) * self.camera_suavidade
-
-        self.camera_y += (
-            alvo_y - self.camera_y
-        ) * self.camera_suavidade
-        self.camera_y = max(0.0, self.camera_y)
-    '''
-
     def atualizar_camera(self, jogo):
         projetil = jogo.projetil
+        alvo = jogo.alvo
 
         if projetil is None:
             self.camera_x = 0.0
@@ -202,13 +140,12 @@ class JogoView:
             self.modo_camera = "seguir"
             return
 
-        # ======================================================
-        # MODO 1: ACOMPANHAR O PROJÉTIL
-        # ======================================================
-
         if self.modo_camera == "seguir":
 
             self.escala = self.escala_base
+
+            if alvo is not None and projetil.x <= alvo.x:
+                return
 
             alvo_x = projetil.x - (
                     self.largura / 2 - self.origem_x
@@ -228,10 +165,6 @@ class JogoView:
 
             # O eixo não desce abaixo da posição inicial
             self.camera_y = max(0.0, self.camera_y)
-
-        # ======================================================
-        # MODO 2: VISÃO GERAL DO RESULTADO
-        # ======================================================
 
         elif self.modo_camera == "visao_geral":
 
@@ -328,39 +261,6 @@ class JogoView:
         if jogo.alvo is not None:
             self.desenhar_alvo(jogo.alvo)
 
-        '''
-        # Desenhar botão Iniciar
-        pygame.draw.rect(
-            self.tela,
-            (46, 204, 113),  # Verde
-            self.botao_inserir,
-            border_radius=8
-        )
-
-        # Desenhar borda do botão
-        pygame.draw.rect(
-            self.tela,
-            (30, 130, 76),
-            self.botao_inserir,
-            2,
-            border_radius=8
-        )
-
-        # Texto do botão
-        texto_iniciar = self.fonte.render(
-            "Inserir",
-            True,
-            (255, 255, 255)
-        )
-
-        # Centralizar texto no botão
-        texto_rect = texto_iniciar.get_rect(
-            center=self.botao_inserir.center
-        )
-
-        self.tela.blit(texto_iniciar, texto_rect)
-        '''
-
         self.desenhar_interface(jogo)
         self.desenhar_editor()
 
@@ -383,25 +283,6 @@ class JogoView:
                     self.altura - inicio_y
                 )
             )
-
-    '''
-    def desenhar_chao(self):
-
-        pygame.draw.rect(
-            self.tela,
-            self.CHÃO,
-            (
-                0,
-                self.chao_y,
-                self.tela.get_width(),
-                self.tela.get_height() - self.chao_y
-            )
-        )
-    '''
-
-    # ==========================================================
-    # EIXO X
-    # ==========================================================
 
     def desenhar_eixo(self):
 
@@ -470,48 +351,9 @@ class JogoView:
                 ):
                     self.tela.blit(texto, texto_rect)
 
-    '''
-    def desenhar_eixo(self):
-
-        pygame.draw.line(
-            self.tela,
-            self.PRETO,
-            (0, self.chao_y),
-            (self.tela.get_width(), self.chao_y),
-            2
-        )
-
-        # Marcações de distância
-        for x in range(0, 151, 10):
-
-            tela_x, tela_y = self.mundo_para_tela(x, 0)
-
-            if tela_x < self.tela.get_width():
-
-                pygame.draw.line(
-                    self.tela,
-                    self.CINZA,
-                    (tela_x, tela_y - 5),
-                    (tela_x, tela_y + 5),
-                    1
-                )
-
-                texto = self.fonte.render(
-                    f"{x} m",
-                    True,
-                    self.PRETO
-                )
-
-                self.tela.blit(
-                    texto,
-                    (tela_x - 10, tela_y + 8)
-                )
-    '''
-
     # ==========================================================
     # CANHÃO
     # ==========================================================
-
     def desenhar_canhao(self, canhao):
 
         # ------------------------------------------------------
@@ -822,37 +664,6 @@ class JogoView:
             titulo,
             (20, 20)
         )
-
-        '''
-        dados = jogo.obter_dados_fisicos()
-        texto_tempo = self.fonte.render(
-            f"Tempo de voo: {dados['tempo']:.2f} seg",
-            True,
-            self.PRETO
-        )
-        self.tela.blit(
-            texto_tempo,
-            (20, 160)
-        )
-        texto_altura = self.fonte.render(
-            f"Altura máxima: {dados['altura_maxima']:.2f} m",
-            True,
-            self.PRETO
-        )
-        self.tela.blit(
-            texto_altura,
-            (20, 190)
-        )
-        texto_distancia = self.fonte.render(
-            f"Alcance horizontal: {dados['alcance']:.2f} m",
-            True,
-            self.PRETO
-        )
-        self.tela.blit(
-            texto_distancia,
-            (20, 220)
-        )
-        '''
 
     def desenhar_editor(self):
 
@@ -1220,17 +1031,9 @@ class JogoView:
             8
         )
 
-        if alvo.atingido:
-
-            cor = self.VERDE
-
-        else:
-
-            cor = self.VERMELHO
-
         pygame.draw.circle(
             self.tela,
-            cor,
+            self.VERMELHO,
             (x, y),
             raio_pixels
         )

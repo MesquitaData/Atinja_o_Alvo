@@ -329,5 +329,54 @@
                 "tempo_jogado": "58.42 segundos"
             }
         ]
+    },
+    "Jogo 60": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 10,
+                "tempo_jogado": "51.51 segundos"
+            }
+        ]
+    },
+    "Jogo 61": {
+        "niveis": []
+    },
+    "Jogo 62": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 10,
+                "tempo_jogado": "48.53 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 6,
+                "tempo_jogado": "32.86 segundos"
+            }
+        ]
+    },
+    "Jogo 63": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "14.68 segundos"
+            }
+        ]
+    },
+    "Jogo 64": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "19.18 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 4,
+                "tempo_jogado": "40.24 segundos"
+            }
+        ]
     }
 }

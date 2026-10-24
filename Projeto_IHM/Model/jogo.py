@@ -56,7 +56,7 @@ class Jogo:
         self.simulacao_finalizada = False
 
         # Cria o alvo em uma nova posição
-        self.alvo = Alvo(x=nova_posicao_x,y=2,raio=2)
+        self.alvo.x = nova_posicao_x
 
     def verificar_colisao_alvo(self):
 

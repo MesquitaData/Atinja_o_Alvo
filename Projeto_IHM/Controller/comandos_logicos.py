@@ -185,35 +185,6 @@ class Interpretador:
 
         return i + 1
 
-    '''
-    def interpretar_repita_ate_atingir(self, linhas, indice_inicio):
-        """Armazena o bloco que será repetido até atingir o alvo."""
-
-        bloco = []
-        i = indice_inicio + 1
-
-        while i < len(linhas):
-            linha = linhas[i].strip()
-
-            if linha.upper() == "FIM":
-                break
-
-            if linha:
-                bloco.append(linha.upper())
-
-            i += 1
-
-        if i >= len(linhas):
-            print("Erro: bloco REPITA ATE ATINGIR sem FIM.")
-            return len(linhas)
-
-        self.bloco_repita = bloco
-        self.indice_bloco = 0
-        self.executando_repita = True
-
-        return i + 1
-'''
-
     """Armazena o bloco REPITA ATE ATINGIR sem iniciá-lo imediatamente."""
     def interpretar_repita_ate_atingir(self, linhas, indice_inicio):
         bloco = []
@@ -240,58 +211,6 @@ class Interpretador:
         self.executando_repita = False
 
         return i + 1
-
-    '''
-    def atualizar(self):
-        """Executa gradualmente os comandos do programa."""
-
-        if not self.executando:
-            return
-
-        # Encerra se o alvo foi atingido
-        if self.jogo.alvo_foi_atingido:
-            self.parar_execucao()
-            return
-
-        # Aguarda o projétil terminar sua trajetória
-        if (
-            self.jogo.projetil is not None
-            and self.jogo.projetil.get_estado()
-        ):
-            return
-
-        # Execução do bloco REPITA ATE ATINGIR
-        if self.executando_repita:
-
-            if not self.bloco_repita:
-                self.parar_execucao()
-                return
-
-            # Reinicia o bloco ao chegar ao fim
-            if self.indice_bloco >= len(self.bloco_repita):
-                self.indice_bloco = 0
-                return
-
-            comando = self.bloco_repita[
-                self.indice_bloco
-            ].strip().upper()
-
-            self.executar_comando(comando)
-            self.indice_bloco += 1
-            return
-
-        # Verifica se todos os comandos foram executados
-        if self.indice_atual >= len(self.comandos):
-            self.executando = False
-            return
-
-        comando = self.comandos[
-            self.indice_atual
-        ].strip().upper()
-
-        self.executar_comando(comando)
-        self.indice_atual += 1
-    '''
 
     """Executa gradualmente os comandos na ordem em que foram escritos."""
     def atualizar(self):
@@ -532,47 +451,3 @@ class Interpretador:
             return f"Valor inválido para a gravidade!"
 
         return None
-
-'''
-    def executar(self, codigo):
-        """Interpreta o código informado pelo usuário."""
-
-        self.parar_execucao()
-
-        # Novo programa começa sem acerto registrado
-        self.jogo.alvo_foi_atingido = False
-
-        linhas = codigo.splitlines()
-        i = 0
-
-        while i < len(linhas):
-            linha = linhas[i].strip()
-
-            if not linha:
-                i += 1
-                continue
-
-            comando = linha.upper()
-
-            # REPITA ATE ATINGIR
-            if comando == "REPITA ATE ATINGIR":
-                i = self.interpretar_repita_ate_atingir(
-                    linhas, i
-                )
-                continue
-
-            # REPITA 10, REPITA 5 etc.
-            elif comando.startswith("REPITA"):
-                i = self.interpretar_repeticao(
-                    linhas, i
-                )
-                continue
-
-            # Comando normal
-            else:
-                self.comandos.append(comando)
-                i += 1
-
-        self.indice_atual = 0
-        self.executando = True
-'''
