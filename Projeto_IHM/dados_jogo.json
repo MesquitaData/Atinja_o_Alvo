@@ -1,0 +1,333 @@
+{
+    "Jogo 1": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": 23.61
+            },
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": 24.0
+            },
+            {
+                "nivel": 2,
+                "tentativas": 1,
+                "tempo_jogado": 15.78
+            }
+        ]
+    },
+    "Jogo 2": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": 17.31
+            },
+            {
+                "nivel": 2,
+                "tentativas": 2,
+                "tempo_jogado": 23.26
+            }
+        ]
+    },
+    "Jogo 3": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "15.1 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 7,
+                "tempo_jogado": "97.69 segundos"
+            }
+        ]
+    },
+    "Jogo 4": {
+        "niveis": []
+    },
+    "Jogo 5": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 3,
+                "tempo_jogado": "1241.06 segundos"
+            }
+        ]
+    },
+    "Jogo 6": {
+        "niveis": []
+    },
+    "Jogo 7": {
+        "niveis": []
+    },
+    "Jogo 8": {
+        "niveis": []
+    },
+    "Jogo 9": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 21,
+                "tempo_jogado": "84.76 segundos"
+            }
+        ]
+    },
+    "Jogo 10": {
+        "niveis": []
+    },
+    "Jogo 11": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 10,
+                "tempo_jogado": "52.43 segundos"
+            }
+        ]
+    },
+    "Jogo 12": {
+        "niveis": []
+    },
+    "Jogo 13": {
+        "niveis": []
+    },
+    "Jogo 14": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 10,
+                "tempo_jogado": "83.12 segundos"
+            }
+        ]
+    },
+    "Jogo 15": {
+        "niveis": []
+    },
+    "Jogo 16": {
+        "niveis": []
+    },
+    "Jogo 17": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 11,
+                "tempo_jogado": "93.53 segundos"
+            }
+        ]
+    },
+    "Jogo 18": {
+        "niveis": []
+    },
+    "Jogo 19": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 2,
+                "tempo_jogado": "79.82 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 1,
+                "tempo_jogado": "5.06 segundos"
+            }
+        ]
+    },
+    "Jogo 20": {
+        "niveis": []
+    },
+    "Jogo 21": {
+        "niveis": []
+    },
+    "Jogo 22": {
+        "niveis": []
+    },
+    "Jogo 23": {
+        "niveis": []
+    },
+    "Jogo 24": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "20.26 segundos"
+            }
+        ]
+    },
+    "Jogo 25": {
+        "niveis": []
+    },
+    "Jogo 26": {
+        "niveis": []
+    },
+    "Jogo 27": {
+        "niveis": []
+    },
+    "Jogo 28": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "20.09 segundos"
+            }
+        ]
+    },
+    "Jogo 29": {
+        "niveis": []
+    },
+    "Jogo 30": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 9,
+                "tempo_jogado": "64.05 segundos"
+            }
+        ]
+    },
+    "Jogo 31": {
+        "niveis": []
+    },
+    "Jogo 32": {
+        "niveis": []
+    },
+    "Jogo 33": {
+        "niveis": []
+    },
+    "Jogo 34": {
+        "niveis": []
+    },
+    "Jogo 35": {
+        "niveis": []
+    },
+    "Jogo 36": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 2,
+                "tempo_jogado": "76.21 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 5,
+                "tempo_jogado": "184.1 segundos"
+            }
+        ]
+    },
+    "Jogo 37": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 2,
+                "tempo_jogado": "109.91 segundos"
+            }
+        ]
+    },
+    "Jogo 38": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "18.57 segundos"
+            }
+        ]
+    },
+    "Jogo 39": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "18.23 segundos"
+            }
+        ]
+    },
+    "Jogo 40": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "17.27 segundos"
+            }
+        ]
+    },
+    "Jogo 41": {
+        "niveis": []
+    },
+    "Jogo 42": {
+        "niveis": []
+    },
+    "Jogo 43": {
+        "niveis": []
+    },
+    "Jogo 44": {
+        "niveis": []
+    },
+    "Jogo 45": {
+        "niveis": []
+    },
+    "Jogo 46": {
+        "niveis": []
+    },
+    "Jogo 47": {
+        "niveis": []
+    },
+    "Jogo 48": {
+        "niveis": []
+    },
+    "Jogo 49": {
+        "niveis": []
+    },
+    "Jogo 50": {
+        "niveis": []
+    },
+    "Jogo 51": {
+        "niveis": []
+    },
+    "Jogo 52": {
+        "niveis": []
+    },
+    "Jogo 53": {
+        "niveis": []
+    },
+    "Jogo 54": {
+        "niveis": []
+    },
+    "Jogo 55": {
+        "niveis": []
+    },
+    "Jogo 56": {
+        "niveis": []
+    },
+    "Jogo 57": {
+        "niveis": []
+    },
+    "Jogo 58": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "17.94 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 3,
+                "tempo_jogado": "39.48 segundos"
+            },
+            {
+                "nivel": 3,
+                "tentativas": 4,
+                "tempo_jogado": "60.07 segundos"
+            }
+        ]
+    },
+    "Jogo 59": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 10,
+                "tempo_jogado": "58.42 segundos"
+            }
+        ]
+    }
+}
