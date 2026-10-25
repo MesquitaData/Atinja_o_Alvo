@@ -1,11 +1,8 @@
-'''
-    > Essa classe é responsável por implementar as regras/regras de negócio do jogo!
-'''
-
 from .projetil import Projetil
 from .alvo import Alvo
 from .canhao import Canhao
 from random import randint
+import pygame
 class Jogo:
 
     def __init__(self, largura, altura):
@@ -26,6 +23,7 @@ class Jogo:
         self.alvo = alvo
 
     def disparar(self):
+
         if self.canhao is None:  # Verifica se existe canhão
             return False
 
@@ -94,6 +92,7 @@ class Jogo:
             self.projetil.desativar()
             self.disparando = False
             self.simulacao_finalizada = True
+            # self.proximo_disparo = pygame.time.get_ticks() + 500
 
             return False
         return False

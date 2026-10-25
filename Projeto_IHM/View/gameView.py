@@ -129,6 +129,10 @@ class JogoView:
 
         return int(tela_x), int(tela_y)
 
+    def reiniciar_camera(self):
+        self.camera_x = 0.0
+        self.camera_y = 0.0
+
     def atualizar_camera(self, jogo):
         projetil = jogo.projetil
         alvo = jogo.alvo

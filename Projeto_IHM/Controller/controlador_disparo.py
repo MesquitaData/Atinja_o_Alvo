@@ -83,7 +83,6 @@ class JogoController:
             self.interpretador.indice_atual = 0
 
         else:
-            if parou_lancamento: self.view.modo_camera = "visao_geral"
-            else: self.view.modo_camera = "seguir"
+            if parou_lancamento: self.view.reiniciar_camera()
             self.interpretador.atualizar()
             self.view.atualizar_campos(jogo)

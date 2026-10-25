@@ -378,5 +378,82 @@
                 "tempo_jogado": "40.24 segundos"
             }
         ]
+    },
+    "Jogo 65": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "105.27 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 1,
+                "tempo_jogado": "5.78 segundos"
+            },
+            {
+                "nivel": 3,
+                "tentativas": 4,
+                "tempo_jogado": "21.49 segundos"
+            },
+            {
+                "nivel": 4,
+                "tentativas": 1,
+                "tempo_jogado": "7.76 segundos"
+            },
+            {
+                "nivel": 5,
+                "tentativas": 4,
+                "tempo_jogado": "22.47 segundos"
+            }
+        ]
+    },
+    "Jogo 66": {
+        "niveis": []
+    },
+    "Jogo 67": {
+        "niveis": []
+    },
+    "Jogo 68": {
+        "niveis": []
+    },
+    "Jogo 69": {
+        "niveis": []
+    },
+    "Jogo 70": {
+        "niveis": []
+    },
+    "Jogo 71": {
+        "niveis": []
+    },
+    "Jogo 72": {
+        "niveis": []
+    },
+    "Jogo 73": {
+        "niveis": []
+    },
+    "Jogo 74": {
+        "niveis": []
+    },
+    "Jogo 75": {
+        "niveis": []
+    },
+    "Jogo 76": {
+        "niveis": []
+    },
+    "Jogo 77": {
+        "niveis": []
+    },
+    "Jogo 78": {
+        "niveis": []
+    },
+    "Jogo 79": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 11,
+                "tempo_jogado": "102.04 segundos"
+            }
+        ]
     }
 }
