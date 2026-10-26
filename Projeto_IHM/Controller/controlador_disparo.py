@@ -19,20 +19,44 @@ class JogoController:
         self.configurar_nivel(1)
 
     def inserir_parametros(self):
+        jogo = self.interpretador.get_jogo()
         valores = self.view.obter_valores_campos()
+
         if valores is None:
-            return
+            self.view.mostrar_mensagem(
+                "Preencha os campos com valores numericos validos."
+            )
+            return False
 
         angulo, velocidade, gravidade = valores
-        self.jogo.canhao.angulo = angulo
 
-        if self.jogo.nivel >= 2:
-            self.jogo.canhao.velocidade_inicial = velocidade
+        # Valida os parâmetros
+        if not 0 <= angulo <= 90:
+            self.view.mostrar_mensagem(
+                "O angulo deve estar entre 0 e 90 graus."
+            )
+            return False
 
-        if self.jogo.nivel >= 3:
-            self.jogo.gravidade = gravidade
+        if velocidade <= 0 or gravidade <= 0:
+            self.view.mostrar_mensagem(
+                "Velocidade e gravidade devem ser positivas."
+            )
+            return False
 
-        self.view.atualizar_campos(self.jogo)
+        # O ângulo é editável em todos os níveis
+        jogo.canhao.angulo = angulo
+
+        # A velocidade é editável a partir do nível 2
+        if jogo.nivel >= 2:
+            jogo.canhao.velocidade_inicial = velocidade
+
+        # A gravidade é editável a partir do nível 3
+        if jogo.nivel >= 3:
+            jogo.gravidade = gravidade
+
+        self.view.atualizar_campos(jogo)
+
+        return True
 
     def processar_eventos(self):
         jogo = self.interpretador.get_jogo()
@@ -42,14 +66,18 @@ class JogoController:
             if not jogo.disparando:
                 resultado_editor = self.view.processar_evento_editor(evento)
                 if resultado_editor == "EXECUTAR":
+                    if not self.inserir_parametros():  # Aplica os valores dos campos antes do disparo
+                        continue
+
                     codigo = self.view.obter_codigo()
-                    self.acerto_processado = False    # Permite contabilizar o próximo acerto
                     resultado = self.interpretador.executar(codigo)
+
                     if resultado is not None:
                         self.view.mostrar_mensagem(resultado)
+
                     continue
 
-            elif self.view.botao_reiniciar_click(evento):
+            if self.view.botao_reiniciar_click(evento):
                 jogo.reiniciar()
                 self.interpretador.executando = False
                 self.interpretador.comandos = []
@@ -63,98 +91,46 @@ class JogoController:
 
         return True
 
-    '''
-    def atualizar(self, dt):
-        jogo = self.interpretador.get_jogo()
-        alvo_atingido = jogo.atualizar(dt)
-        parou_lancamento = jogo.atingiu_solo()
-        valores = self.view.obter_valores_campos()
-
-        if valores is not None:
-            angulo, velocidade, gravidade = valores
-            jogo.canhao.angulo = angulo
-
-            if jogo.nivel >= 2:
-                jogo.canhao.velocidade_inicial = velocidade
-
-            if jogo.nivel >= 3:
-                jogo.gravidade = gravidade
-        
-        if alvo_atingido:
-            self.view.modo_camera = "visao_geral"
-            if not self.acerto_processado:
-                self.estatisticas.concluir_nivel()
-                self.acerto_processado = True
-                self.avancar_nivel()
-            self.interpretador.executando = False
-            self.interpretador.comandos = []
-            self.interpretador.indice_atual = 0
-
-        else:
-            if parou_lancamento: self.view.reiniciar_camera()
-            self.interpretador.atualizar()
-            self.view.atualizar_campos(jogo)
-        
-        if alvo_atingido:
-            self.view.modo_camera = "visao_geral"
-
-            if not self.acerto_processado:
-                self.acerto_processado = True
-
-                self.estatisticas.concluir_nivel()
-
-                self.avancar_nivel()
-                jogo.reiniciar_com_novo_alvo()
-
-                self.view.atualizar_campos_nivel(jogo.nivel)
-                self.view.atualizar_campos(jogo)
-
-            self.interpretador.executando = False
-            self.interpretador.comandos = []
-            self.interpretador.indice_atual = 0
-
-        else:
-            if parou_lancamento:
-                self.view.reiniciar_camera()
-            self.interpretador.atualizar()
-            self.view.atualizar_campos(jogo)
-    '''
-
-
     def atualizar(self, dt):
         jogo = self.interpretador.get_jogo()
 
         # Atualiza a simulação e verifica se houve acerto
         alvo_atingido = jogo.atualizar(dt)
 
-        if alvo_atingido:
-            if not self.acerto_processado:
-                self.acerto_processado = True
+        if alvo_atingido and not self.acerto_processado:
+            self.acerto_processado = True
 
-                # Registra a conclusão do nível
-                self.estatisticas.concluir_nivel()
-
-                # Avança somente após acertar o alvo
-                self.avancar_nivel()
-
-                # Prepara o alvo para a próxima tentativa
-                jogo.reiniciar_com_novo_alvo()
-
-                # Atualiza a interface para o novo nível
-                self.view.atualizar_campos_nivel(jogo.nivel)
-                self.view.atualizar_campos(jogo)
+            self.estatisticas.concluir_nivel()
 
             # Encerra a execução anterior do interpretador
             self.interpretador.executando = False
             self.interpretador.comandos = []
             self.interpretador.indice_atual = 0
+            self.interpretador.bloco_repita = []
+            self.interpretador.indice_bloco = 0
+            self.interpretador.executando_repita = False
 
-            # Não processa outro comando neste mesmo quadro
+            # Avança o nível e configura seus parâmetros
+            self.avancar_nivel()
+
+            # Prepara o jogo para o próximo disparo
+            jogo.reiniciar_com_novo_alvo()
+
+            self.view.atualizar_campos_nivel(jogo.nivel)
+            self.view.atualizar_campos(jogo)
+
+            # Libera o processamento de um próximo acerto.
+            # O próximo acerto só será detectado após novo disparo.
+            self.acerto_processado = False
+
             return
 
-        # Se o disparo terminou sem acerto, permite tentar novamente
+        # Se o disparo terminou sem acertar, permite uma nova tentativa
         if jogo.atingiu_solo():
             self.view.reiniciar_camera()
+
+            # Libera o processamento do próximo acerto
+            self.acerto_processado = False
 
         # Continua a execução normal do interpretador
         self.interpretador.atualizar()

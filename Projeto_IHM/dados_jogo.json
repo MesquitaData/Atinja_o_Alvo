@@ -39,5 +39,103 @@
     },
     "Jogo 6": {
         "niveis": []
+    },
+    "Jogo 7": {
+        "niveis": []
+    },
+    "Jogo 8": {
+        "niveis": []
+    },
+    "Jogo 9": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "15.6 segundos"
+            }
+        ]
+    },
+    "Jogo 10": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "14.97 segundos"
+            }
+        ]
+    },
+    "Jogo 11": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "21.27 segundos"
+            }
+        ]
+    },
+    "Jogo 12": {
+        "niveis": []
+    },
+    "Jogo 13": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "12.46 segundos"
+            }
+        ]
+    },
+    "Jogo 14": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "24.14 segundos"
+            }
+        ]
+    },
+    "Jogo 15": {
+        "niveis": []
+    },
+    "Jogo 16": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "16.08 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 2,
+                "tempo_jogado": "17.63 segundos"
+            }
+        ]
+    },
+    "Jogo 17": {
+        "niveis": [
+            {
+                "nivel": 1,
+                "tentativas": 1,
+                "tempo_jogado": "12.98 segundos"
+            },
+            {
+                "nivel": 2,
+                "tentativas": 2,
+                "tempo_jogado": "21.75 segundos"
+            },
+            {
+                "nivel": 3,
+                "tentativas": 2,
+                "tempo_jogado": "20.95 segundos"
+            },
+            {
+                "nivel": 4,
+                "tentativas": 1,
+                "tempo_jogado": "13.43 segundos"
+            }
+        ]
+    },
+    "Jogo 18": {
+        "niveis": []
     }
 }

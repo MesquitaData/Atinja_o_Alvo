@@ -97,8 +97,8 @@ class JogoView:
 
         self.tela = tela
 
-        # Escala 1:8 pixels
-        self.escala = 8
+        # Escala 1:7 pixels
+        self.escala = 7
         self.escala_base = self.escala
 
         # Posição da origem do sistema físico na tela
@@ -555,72 +555,76 @@ class JogoView:
 
     def processar_evento_campo(self, evento, jogo):
 
+        # Seleção de campos pelo mouse
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            self.campo_ativo = None
+            campo_anterior = self.campo_ativo
+
+            # Se havia um campo ativo e o clique foi fora dele,
+            # tenta salvar o valor digitado antes de desativá-lo.
+            clicou_em_campo = None
 
             for nome, campo in self.campos.items():
                 if campo["rect"].collidepoint(evento.pos):
-
-                    # Só permite selecionar campos habilitados
                     if campo["habilitado"]:
-                        self.campo_ativo = nome
-
+                        clicou_em_campo = nome
                     break
 
+            if campo_anterior is not None and clicou_em_campo != campo_anterior:
+                if not self._salvar_valor_campo(campo_anterior, jogo):
+                    # Mantém o campo ativo caso o valor seja inválido.
+                    return
+
+            self.campo_ativo = clicou_em_campo
+
+        # Edição pelo teclado
         elif evento.type == pygame.KEYDOWN and self.campo_ativo:
 
             campo = self.campos[self.campo_ativo]
 
-            # Impede a edição de campos bloqueados
             if not campo["habilitado"]:
                 self.campo_ativo = None
                 return
 
             if evento.key == pygame.K_RETURN:
-                try:
-                    valor = float(
-                        campo["texto"].replace(",", ".")
-                    )
-
-                    if self.campo_ativo == "angulo":
-                        if not 0 <= valor <= 90:
-                            raise ValueError
-
-                        if jogo.canhao is not None:
-                            jogo.canhao.angulo = valor
-
-                    elif self.campo_ativo == "velocidade":
-                        if valor <= 0:
-                            raise ValueError
-
-                        # Velocidade editável a partir do nível 2
-                        if jogo.nivel >= 2:
-                            if jogo.canhao is not None:
-                                jogo.canhao.velocidade_inicial = valor
-                        else:
-                            raise ValueError
-
-                    elif self.campo_ativo == "gravidade":
-                        if valor <= 0:
-                            raise ValueError
-
-                        # Gravidade editável a partir do nível 3
-                        if jogo.nivel >= 3:
-                            jogo.gravidade = valor
-                        else:
-                            raise ValueError
-
+                if self._salvar_valor_campo(self.campo_ativo, jogo):
                     self.campo_ativo = None
-
-                except ValueError:
-                    # Mantém o campo ativo para correção do valor.
-                    pass
 
             elif evento.key == pygame.K_BACKSPACE:
                 campo["texto"] = campo["texto"][:-1]
 
             elif evento.unicode and evento.unicode in "0123456789.,-":
                 campo["texto"] += evento.unicode
+
+    def _salvar_valor_campo(self, nome, jogo):
+        campo = self.campos[nome]
+
+        try:
+            valor = float(campo["texto"].replace(",", "."))
+
+            if nome == "angulo":
+                if not 0 <= valor <= 90:
+                    return False
+
+                if jogo.canhao is not None:
+                    jogo.canhao.angulo = valor
+
+            elif nome == "velocidade":
+                if valor <= 0 or jogo.nivel < 2:
+                    return False
+
+                if jogo.canhao is not None:
+                    jogo.canhao.velocidade_inicial = valor
+
+            elif nome == "gravidade":
+                if valor <= 0 or jogo.nivel < 3:
+                    return False
+
+                jogo.gravidade = valor
+
+            return True
+
+        except (ValueError, KeyError):
+            return False
 
     def mostrar_mensagem(self, mensagem):
         self.mensagem = mensagem
