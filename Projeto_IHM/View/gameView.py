@@ -29,6 +29,8 @@ class JogoView:
         self.camera_x = 0.0
         self.camera_y = 0.0
         self.camera_ativa = True
+        self.campo_ativo = False
+        self.mensagem_nivel = False
         self.camera_suavidade = 0.10
         self.modo_camera = "seguir"
 
@@ -132,6 +134,11 @@ class JogoView:
     def reiniciar_camera(self):
         self.camera_x = 0.0
         self.camera_y = 0.0
+
+    def mostrar_mensagem_nivel(self, nivel):
+        self.mensagem = f"NÍVEL {nivel}"
+        self.mensagem_nivel = True
+        self.tempo_mensagem = pygame.time.get_ticks() + 2000
 
     def atualizar_camera(self, jogo):
         projetil = jogo.projetil
@@ -487,35 +494,6 @@ class JogoView:
         self.campos["gravidade"]["texto"] = "9.81"
         self.campo_ativo = None
 
-    def inicializar_campos(self, jogo):
-        self.campos = {
-            "angulo": {
-                "rect": pygame.Rect(190, 65, 70, 30),
-                "texto": str(jogo.canhao.angulo if jogo.canhao else 45),
-            },
-            "velocidade": {
-                "rect": pygame.Rect(190, 100, 70, 30),
-                "texto": str(
-                    jogo.canhao.velocidade_inicial
-                    if jogo.canhao else 10
-                ),
-            },
-            "gravidade": {
-                "rect": pygame.Rect(190, 135, 70, 30),
-                "texto": str(jogo.gravidade),
-            },
-        }
-
-        rect_gravidade = self.campos["gravidade"]["rect"]
-        self.botao_inserir = pygame.Rect(
-            rect_gravidade.x-95,
-            rect_gravidade.bottom + 15,
-            90,
-            45
-        )
-
-        self.campo_ativo = None
-
     def desenhar_campos(self):
         configuracoes = [
             ("angulo", "Ângulo:", "°"),
@@ -576,16 +554,27 @@ class JogoView:
             )
 
     def processar_evento_campo(self, evento, jogo):
-        if evento.type == pygame.MOUSEBUTTONDOWN:
+
+        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             self.campo_ativo = None
 
             for nome, campo in self.campos.items():
                 if campo["rect"].collidepoint(evento.pos):
-                    self.campo_ativo = nome
+
+                    # Só permite selecionar campos habilitados
+                    if campo["habilitado"]:
+                        self.campo_ativo = nome
+
                     break
 
         elif evento.type == pygame.KEYDOWN and self.campo_ativo:
+
             campo = self.campos[self.campo_ativo]
+
+            # Impede a edição de campos bloqueados
+            if not campo["habilitado"]:
+                self.campo_ativo = None
+                return
 
             if evento.key == pygame.K_RETURN:
                 try:
@@ -604,20 +593,27 @@ class JogoView:
                         if valor <= 0:
                             raise ValueError
 
-                        if jogo.canhao is not None:
-                            jogo.canhao.velocidade_inicial = valor
+                        # Velocidade editável a partir do nível 2
+                        if jogo.nivel >= 2:
+                            if jogo.canhao is not None:
+                                jogo.canhao.velocidade_inicial = valor
+                        else:
+                            raise ValueError
 
                     elif self.campo_ativo == "gravidade":
                         if valor <= 0:
                             raise ValueError
 
-                        jogo.GRAVIDADE = valor
+                        # Gravidade editável a partir do nível 3
+                        if jogo.nivel >= 3:
+                            jogo.gravidade = valor
+                        else:
+                            raise ValueError
 
                     self.campo_ativo = None
 
                 except ValueError:
-                    # Valor inválido: mantém o campo
-                    # ativo para que o jogador possa corrigi-lo.
+                    # Mantém o campo ativo para correção do valor.
                     pass
 
             elif evento.key == pygame.K_BACKSPACE:
@@ -636,9 +632,13 @@ class JogoView:
 
         if pygame.time.get_ticks() > self.tempo_mensagem:
             self.mensagem = ""
+            self.mensagem_nivel = False
             return
 
-        fonte = pygame.font.SysFont("Arial", 30, bold=True)
+        if getattr(self, "mensagem_nivel", False):
+            fonte = pygame.font.SysFont("Arial", 52, bold=True)
+        else:
+            fonte = pygame.font.SysFont("Arial", 30, bold=True)
 
         texto = fonte.render(
             self.mensagem,
@@ -828,6 +828,12 @@ class JogoView:
             texto_rect
         )
 
+    def botao_reiniciar_click(self,evento):
+        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+            if self.botao_reiniciar.collidepoint(evento.pos):
+                return True
+        return False
+
     def processar_evento_editor(self, evento):
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if evento.button == 1:
@@ -887,9 +893,6 @@ class JogoView:
 
                 if self.botao_executar.collidepoint(evento.pos):
                     return "EXECUTAR"
-
-                if self.botao_reiniciar.collidepoint(evento.pos):
-                    return "REINICIAR"
 
         if evento.type == pygame.KEYDOWN:
 
@@ -1512,3 +1515,48 @@ class JogoView:
             (alvo_x + 28, chao_y),
             7
         )
+
+    def inicializar_campos(self, jogo):
+        self.campos = {
+            "angulo": {
+                "rect": pygame.Rect(190, 65, 70, 30),
+                "texto": str(
+                    jogo.canhao.angulo if jogo.canhao else 10
+                ),
+                "habilitado": True
+            },
+            "velocidade": {
+                "rect": pygame.Rect(190, 100, 70, 30),
+                "texto": str(
+                    jogo.canhao.velocidade_inicial
+                    if jogo.canhao else 10
+                ),
+                "habilitado": True
+            },
+            "gravidade": {
+                "rect": pygame.Rect(190, 135, 70, 30),
+                "texto": str(jogo.gravidade),
+                "habilitado": True
+            },
+        }
+
+        rect_gravidade = self.campos["gravidade"]["rect"]
+
+        self.campo_ativo = None
+
+    def atualizar_campos_nivel(self, nivel):
+        # O ângulo pode ser alterado em todos os níveis.
+        self.campos["angulo"]["habilitado"] = True
+
+        # A velocidade é liberada a partir do nível 2.
+        self.campos["velocidade"]["habilitado"] = nivel >= 2
+
+        # A gravidade é liberada a partir do nível 3.
+        self.campos["gravidade"]["habilitado"] = nivel >= 3
+
+        # Se o campo ativo ficar bloqueado, desativa a edição.
+        if (
+                self.campo_ativo is not None
+                and not self.campos[self.campo_ativo]["habilitado"]
+        ):
+            self.campo_ativo = None

@@ -301,13 +301,19 @@ class Interpretador:
         comando = comando.strip().upper()
 
         if comando.startswith("ANGULO"):
-            return self.interpretar_angulo(comando)
+            if not self.jogo.parametro_permitido("ANGULO"):
+                return "O ângulo não pode ser alterado neste nível."
+            self.interpretar_angulo(comando)
 
         elif comando.startswith("VELOCIDADE"):
-            return self.interpretar_velocidade(comando)
+            if not self.jogo.parametro_permitido("VELOCIDADE"):
+                return "A velocidade não pode ser alterada neste nível."
+            self.interpretar_velocidade(comando)
 
         elif comando.startswith("GRAVIDADE"):
-            return self.interpretar_gravidade(comando)
+            if not self.jogo.parametro_permitido("GRAVIDADE"):
+                return "A gravidade não pode ser alterada neste nível."
+            self.interpretar_angulo(comando)
 
         elif comando == "DISPARAR":
             disparou = self.jogo.disparar()
